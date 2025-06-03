@@ -1,0 +1,61 @@
+##################### Extra Hard Starting Project ######################
+import datetime as dt
+import random
+import smtplib
+from email.message import EmailMessage
+import pandas
+
+PLACEHOLDER = "[NAME]"
+my_email = "devtestbr883@gmail.com"
+password = "jqcvazzpecgbdqre"
+sender_mail = "devtestbr@yahoo.com"
+
+now = dt.datetime.now()
+now_month = now.month
+now_day = now.day
+
+file_list = ["letter_1.txt", "letter_2.txt", "letter_3.txt"]
+random_file = random.choice(file_list)
+
+# 1. Update the birthdays.csv
+data = pandas.read_csv("birthdays.csv")
+
+
+
+
+# 2. Check if today matches a birthday in the birthdays.csv
+selected_df = data[(data["day"] == now_day) & (data["month"] == now_month)]
+names = selected_df["name"].to_list()
+
+
+print(names)
+
+
+
+for name in names:
+    random_file = random.choice(file_list)
+    with open(f"letter_templates/{random_file}") as birth_letter:
+        letter_contents = birth_letter.read()
+
+        new_letter = letter_contents.replace(PLACEHOLDER, name)
+        print(new_letter)
+
+
+
+# 3. If step 2 is true, pick a random letter from letter templates and replace the [NAME] with the person's actual name from birthdays.csv
+
+# 4. Send the letter generated in step 3 to that person's email address.
+
+    msg = EmailMessage()
+    msg["Subject"] = "Motivational Quote"
+    msg["From"] = my_email
+    msg["To"] = sender_mail
+    msg.set_content(new_letter)
+    with smtplib.SMTP("smtp.gmail.com") as connection:
+        connection.starttls()
+        connection.login(user=my_email, password=password)
+        connection.send_message(msg)
+
+
+
+
