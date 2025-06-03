@@ -5,9 +5,9 @@ from email.message import EmailMessage
 import pandas
 
 PLACEHOLDER = "[NAME]"
-my_email = "devtestbr883@gmail.com"
-password = "jqcvazzpecgbdqre"
-sender_mail = "devtestbr@yahoo.com"
+reciver_mail = "reciver"
+password = "password"
+sender_mail = "sender"
 
 now = dt.datetime.now()
 now_month = now.month
@@ -39,12 +39,12 @@ for name in names:
 
     msg = EmailMessage()
     msg["Subject"] = "Motivational Quote"
-    msg["From"] = my_email
-    msg["To"] = sender_mail
+    msg["From"] = sender_mail
+    msg["To"] = reciver_mail
     msg.set_content(new_letter)
     with smtplib.SMTP("smtp.gmail.com") as connection:
         connection.starttls()
-        connection.login(user=my_email, password=password)
+        connection.login(user=sender_mail, password=password)
         connection.send_message(msg)
 
 
